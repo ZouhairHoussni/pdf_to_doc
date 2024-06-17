@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload PDF</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Add any additional custom styles here */
+    </style>
+</head>
+<body class="bg-zinc-100 dark:bg-zinc-800 min-h-screen flex flex-col items-center justify-center">
+    <header class="bg-red-500 text-white text-2xl font-bold mt-8 text-center w-full py-4">
+        Information Extractor
+    </header>
+    <div class="min-h-screen flex flex-col items-center justify-center">
+        <form method="post" enctype="multipart/form-data" class="flex flex-col items-center">
+            {% csrf_token %}
+            <div
+                id="dropArea"
+                class="mt-4 w-64 h-64 border-4 border-dashed border-zinc-400 dark:border-zinc-600 flex items-center justify-center rounded-lg cursor-pointer"
+                onclick="document.getElementById('fileInput').click();"
+                ondrop="dropHandler(event);"
+                ondragover="dragOverHandler(event);"
+                ondragleave="dragLeaveHandler(event);"
+            >
+                <p id="dropAreaText" class="text-zinc-400 dark:text-zinc-600">Drag and drop PDF here or click</p>
+            </div>
+            <input type="file" id="fileInput" name="pdf_file" class="hidden" accept=".pdf" onchange="fileInputHandler(event)" />
+            <p id="fileName" class="mt-4 text-zinc-400 dark:text-zinc-600"></p>
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg mt-4">Extract Text</button>
+        </form>
+    </div>
+    <script>
+        function fileInputHandler(event) {
+            const file = event.target.files[0];
+            if (file) {
+                document.getElementById('fileName').textContent = `File selected: ${file.name}`;
+            }
+        }
+
+        function dropHandler(event) {
+            event.preventDefault();
+            const files = event.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('fileInput').files = files;
+                document.getElementById('fileName').textContent = `File dropped: ${files[0].name}`;
+            }
+        }
+
+        function dragOverHandler(event) {
+            event.preventDefault();
+            document.getElementById('dropArea').classList.add('border-blue-500');
+        }
+
+        function dragLeaveHandler(event) {
+            document.getElementById('dropArea').classList.remove('border-blue-500');
+        }
+    </script>
+</body>
+</html>
