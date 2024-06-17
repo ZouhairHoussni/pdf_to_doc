@@ -9,7 +9,7 @@ from .prompts import *
 import openai
 import json
 
-api_key = "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"
+api_key = "sk-"
 client = openai.OpenAI(api_key=api_key)
 
 def generate_content(prompt):
