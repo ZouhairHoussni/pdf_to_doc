@@ -23,3 +23,9 @@ urlpatterns = [
     path('', views.upload_pdf, name='upload_pdf'),
     path('download/', views.download_doc, name='download_doc'),
 ]
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
